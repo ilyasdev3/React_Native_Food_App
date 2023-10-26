@@ -10,9 +10,13 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { messageCleanUp } from "../redux-store/auth/auth.slice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux-store/store";
 
 const Profile = ({ navigation }: any) => {
   const [user, setUser] = useState<any>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   const getUser = async () => {
     try {
@@ -30,7 +34,6 @@ const Profile = ({ navigation }: any) => {
       await AsyncStorage.removeItem("FOOD_APP_USER");
       await AsyncStorage.removeItem("FOOD_APP_TOKEN");
       navigation.navigate("Login");
-
       setUser(null);
     } catch (error) {
       console.log(error);
@@ -41,41 +44,58 @@ const Profile = ({ navigation }: any) => {
     getUser();
   }, []);
 
+  const handleLogin = () => {
+    dispatch(messageCleanUp());
+    navigation.navigate("Login");
+  };
+
   console.log(user, "user");
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
-        <Image
-          source={require("../assets/images/ilyas.jpeg")}
-          style={{ width: 100, height: 100, borderRadius: 50 }}
-        />
-        <Text style={styles.username}>{user?.name}</Text>
-        <Text style={styles.email}>{user?.email}</Text>
-      </View>
+      {user && (
+        <>
+          <View style={styles.header}>
+            <Image
+              source={require("../assets/images/ilyas.jpeg")}
+              style={{ width: 100, height: 100, borderRadius: 50 }}
+            />
+            <Text style={styles.username}>{user?.name}</Text>
+            <Text style={styles.email}>{user?.email}</Text>
+          </View>
 
-      <View style={styles.infoSection}>
-        <View style={styles.infoItem}>
-          <Icon name="phone" size={25} color="#333" />
-          <Text style={styles.infoText}>{user?.phone}</Text>
-        </View>
-        <View style={styles.infoItem}>
-          <Icon name="map-marker" size={25} color="#333" />
-          <Text style={styles.infoText}>{user?.address}</Text>
-        </View>
-        <View style={styles.infoItem}>
-          <Icon name="globe" size={25} color="#333" />
-          <Text style={styles.infoText}>ilyasdev3.netlify.app</Text>
-        </View>
-      </View>
+          <View style={styles.infoSection}>
+            <View style={styles.infoItem}>
+              <Icon name="phone" size={25} color="#333" />
+              <Text style={styles.infoText}>{user?.phone}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Icon name="map-marker" size={25} color="#333" />
+              <Text style={styles.infoText}>{user?.address}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Icon name="globe" size={25} color="#333" />
+              <Text style={styles.infoText}>ilyasdev3.netlify.app</Text>
+            </View>
+          </View>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Edit Profile</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Edit Profile</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-        <Text style={styles.logoutButtonText}>Logout</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
+        </>
+        // ) : (
+      )}
+      {!user && (
+        <View>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 };
