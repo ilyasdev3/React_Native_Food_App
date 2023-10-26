@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 interface ButtonProps extends TouchableOpacityProps {
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | "icon";
   variant?: "default" | "outline" | "link";
   rounded?: boolean;
 }
@@ -27,6 +27,8 @@ const Button: FC<ButtonProps> = ({
         return { fontSize: 12 };
       case "large":
         return { fontSize: 18 };
+      case "icon":
+        return { fontSize: 8 };
       default:
         return { fontSize: 16 };
     }
