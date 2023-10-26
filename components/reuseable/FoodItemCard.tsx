@@ -1,9 +1,25 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect } from "react";
+import { AppDispatch } from "../../redux-store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { getProduct } from "../../redux-store/product/product.slice";
+interface FoodItemCardProps {
+  imageSource: any;
+  backgroundColor: string;
+  text: string;
+  productId?: any;
+  onPress?: () => void;
+}
 
-const FoodItemCard = ({ imageSource, backgroundColor, text }: any) => {
+const FoodItemCard: React.FC<FoodItemCardProps> = ({
+  imageSource,
+  backgroundColor,
+  text,
+  onPress,
+}) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={{
         height: 150,
         width: 130,
@@ -28,7 +44,7 @@ const FoodItemCard = ({ imageSource, backgroundColor, text }: any) => {
           overflow: "hidden",
         }}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 
