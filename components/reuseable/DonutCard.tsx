@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginStart: 10,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
     gap: 10,
     backgroundColor: "#84A59D",
@@ -44,9 +44,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   cardImage: {
-    width: 140,
-    height: 130,
+    // width: 140,
+    // height: 130,
     marginTop: -60,
-    objectFit: "cover",
+    // objectFit: "cover",
+    zIndex: 1,
   },
 });
