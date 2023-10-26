@@ -82,6 +82,13 @@ const Signup = ({ navigation }: any) => {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
       />
+      <View>
+        {getAuthError && (
+          <Text style={{ color: "red", fontSize: 18 }}>
+            {getAuthError && getAuthError?.message}
+          </Text>
+        )}
+      </View>
       <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
@@ -101,11 +108,6 @@ const Signup = ({ navigation }: any) => {
           </Text>
         </TouchableOpacity>
       </View>
-      {getAuthError && (
-        <Text style={{ color: "red", fontSize: 18 }}>
-          {getAuthError && getAuthError?.message}
-        </Text>
-      )}
     </View>
   );
 };
