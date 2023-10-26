@@ -10,7 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux-store/store";
-import { loginUser } from "../redux-store/auth/auth.slice";
+import { loginUser, messageCleanUp } from "../redux-store/auth/auth.slice";
 import { selectAuthMessage } from "../redux-store/auth/auth.seletor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -19,10 +19,13 @@ const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>();
+
   const message = useSelector(selectAuthMessage);
 
   const handleLogin = async () => {
     try {
+      dispatch(messageCleanUp());
+
       if (email === "" && password === "") {
         alert("Please enter your email and password");
         return;
@@ -42,9 +45,12 @@ const Login = ({ navigation }: any) => {
 
   useEffect(() => {
     if (message === "Login successfully") {
-      navigation.navigate("Home");
+      navigation.navigate("TabNavigator");
     }
   }, [message]);
+  useEffect(() => {
+    dispatch(messageCleanUp());
+  }, []);
 
   console.log(message, "message");
 
