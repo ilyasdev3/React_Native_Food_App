@@ -7,14 +7,27 @@ import {
   ScrollView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "../components/reuseable/Avatar";
 import { ServerIcon } from "react-native-heroicons/outline";
 import Button from "../components/reuseable/Button";
 import DonutCard from "../components/reuseable/DonutCard";
 import FoodItemCard from "../components/reuseable/FoodItemCard";
-const Home = () => {
+import Icon from "react-native-vector-icons/FontAwesome";
+import { FoodContext } from "../context/foodContent";
+
+const Home = ({ navigation }: any) => {
+  const { food, getFood, loading, error }: any = React.useContext(FoodContext);
+
   const insets = useSafeAreaInsets();
+  const handleFoodCardPress = () => {
+    navigation.navigate("Details");
+  };
+
+  useEffect(() => {
+    getFood();
+  }, []);
+
   return (
     <View
       style={{
@@ -33,13 +46,7 @@ const Home = () => {
       {/* search section */}
       <View style={styles.searchWrapper}>
         <View style={styles.searchContainer}>
-          <ServerIcon
-            color={"gray"}
-            style={{
-              width: 20,
-              marginRight: 10,
-            }}
-          />
+          <Icon name="search" size={20} color="gray" />
           <TextInput
             placeholder="Search..."
             style={{
@@ -87,22 +94,58 @@ const Home = () => {
         showsHorizontalScrollIndicator={false}
         style={styles.FoodCardScroll}
       >
-        <FoodItemCard
+        {/* {error && <Text>Error: {error.message}</Text>} */}
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : (
+          food &&
+          food.map((item: any) => (
+            <FoodItemCard
+              onPress={handleFoodCardPress}
+              backgroundColor="#FFEF92"
+              imageSource={require("../assets/images/burger.png")}
+              text={item.name}
+              key={item._id}
+            />
+          ))
+        )}
+
+        {/* <FoodItemCard
+          onPress={handleFoodCardPress}
+          backgroundColor="#FFEF92"
+          imageSource={require("../assets/images/burger.png")}
+          text={"Burger"}
+        )
+        {/* <FoodItemCard
+          onPress={handleFoodCardPress}
           backgroundColor="#FFEF92"
           imageSource={require("../assets/images/burger.png")}
           text={"Burger"}
         />
         <FoodItemCard
+          onPress={handleFoodCardPress}
           backgroundColor="#F5CAC3"
           imageSource={require("../assets/images/fries.png")}
           text={"Fries"}
         />
         <FoodItemCard
+          onPress={handleFoodCardPress}
           backgroundColor="#B6D7CF"
           imageSource={require("../assets/images/drink.png")}
           text={"Drink"}
-        />
+        /> */}
       </ScrollView>
+
+      {/*  */}
+      <View
+        style={{
+          width: "90%",
+          marginEnd: "auto",
+          marginStart: "auto",
+        }}
+      >
+        <Text style={{ fontSize: 30, fontWeight: "300" }}>Best Offers 💕</Text>
+      </View>
     </View>
   );
 };
@@ -132,11 +175,12 @@ const styles = StyleSheet.create({
   searchContainer: {
     width: "70%",
     backgroundColor: "#E6E6E6",
-
     paddingHorizontal: 20,
     borderRadius: 20,
     paddingVertical: 8,
     display: "flex",
+    alignItems: "center",
+    gap: 10,
     flexDirection: "row",
     elevation: 5, // For Android
     shadowColor: "#000", // For iOS
