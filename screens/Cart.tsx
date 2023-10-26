@@ -16,15 +16,37 @@ import Button from "../components/reuseable/Button";
 import CartItem from "../components/reuseable/CartItem";
 import useAuth from "../authGurad/AuthGurad";
 
-const Cart = () => {
+const Cart = ({ navigation }: any) => {
   const insets = useSafeAreaInsets();
-  const isFocused = useIsFocused(); // Use the useIsFocused hook
-  const navigation = useNavigation();
-  if (!isFocused) return null; // Return null to prevent rendering if not focused
+  // const isFocused = useIsFocused(); // Use the useIsFocused hook
+  // const navigation = useNavigation();
+  // if (!isFocused) return null; // Return null to prevent rendering if not focused
   const authenticated = useAuth();
 
   if (!authenticated) {
-    return <Text>You are not authenticated</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          paddingTop: insets.top + 20,
+          paddingBottom: insets.bottom,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 30,
+          paddingHorizontal: 20,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 28,
+            fontWeight: "400",
+          }}
+        >
+          Opps! You are not logged in
+        </Text>
+      </View>
+    );
   }
 
   return (
