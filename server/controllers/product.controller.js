@@ -4,6 +4,7 @@ const productRepository = require("../repositories/product.repository");
 module.exports = {
   getProducts: async (req, res) => {
     try {
+      console.log("getProducts");
       const products = await productRepository.getAllProducts();
       return res.status(STATUS.SUCCESS).json({ products });
     } catch (error) {
